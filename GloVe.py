@@ -32,6 +32,10 @@ class UnderscoreSentenceTokenizer(Tokenizer):
 
 
 class WhitespaceSentenceTokenizer(Tokenizer):
+    """
+    An example of custom tokenizer, it has to implement a "tokenize" function
+    """
+
     def __init__(self):
         pass
 
@@ -51,6 +55,7 @@ class GloVe:
     """
     Sentence similarity implementation using GloVe
     """
+
     def __init__(self, path, tokenizer=None):
         """
         Word vocabulary initialization
@@ -77,7 +82,7 @@ class GloVe:
         """
         try:
             return self.dictionary.loc[word].to_numpy()
-        except:
+        except: # word not found in dictionary
             return np.array([0] * self.dimension)
 
 
