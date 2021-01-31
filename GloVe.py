@@ -39,7 +39,7 @@ class GloVe:
             for i in range(len(temp_vector)):
                 vector[i] += temp_vector[i]
         for i in range(len(vector)):
-            vector[i]/=len(vector)
+            vector[i]/=len(tokens)
         return vector
 
     def string_vector_tokenized(self, tokenized_string):
@@ -54,7 +54,7 @@ class GloVe:
             for i in range(len(temp_vector)):
                 vector[i] += temp_vector[i]
         for i in range(len(vector)):
-            vector[i]/=len(vector)
+            vector[i]/=len(tokenized_string)
         return vector
 
     def vector_sim(self, vector1, vector2):
