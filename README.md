@@ -1,6 +1,6 @@
 # GloVe_Playground
 
-This repository contains code to perform operations on pre-trained GloVe vectors (just a playground). You can download the GloVe vectors from https://nlp.stanford.edu/projects/glove/
+This repository contains example code to perform operations on pre-trained GloVe vectors. You can download the GloVe vectors from https://nlp.stanford.edu/projects/glove/
 
-This code is written in Python 2.7
+Version: Python 3.5++
 Dependencies: numpy, pandas, nltk, and sklearn
