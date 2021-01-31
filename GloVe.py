@@ -56,20 +56,26 @@ class GloVe:
     Sentence similarity implementation using GloVe
     """
 
-    def __init__(self, path, tokenizer=None):
+    def __init__(self, path, reduce_memory=True, tokenizer=None):
         """
         Word vocabulary initialization
         Args:
             path (String): GloVe word vector dictionary path (download one from https://nlp.stanford.edu/projects/glove/)
+            reduce_memory (Bool): True or False; default=True; True if we want to convert float64 to float32 to reduce memory consumption (in half)
             tokenizer (Object): tokenizer object, default=RegexpTokenizer from nltk
         """
         print("[GloVe] Loading word vector dictionary")
         self.dictionary = pd.read_csv(filepath_or_buffer=path, delim_whitespace=True, header=None, index_col=0, doublequote=False, quoting=3)
+        if reduce_memory:
+            print("[GloVe] Converting float64 to float32 to reduce memory consumption, but this reduces arithmetic precision")
+            self.dictionary = self.dictionary.astype({c: np.float32 for c in self.dictionary.select_dtypes(include='float64').columns}) 
         self.dimension = self.dictionary.shape[1] # vector dimension
+        
         if tokenizer == None:
             self.sentence_tokenizer = RegexpTokenizer(r'\w+')
         else:
             self.sentence_tokenizer = tokenizer
+        
         print("[GloVe] dictionary loaded: #tokens=%d dimension=%d" % (self.dictionary.shape[0], self.dimension))
 
 
@@ -166,15 +172,19 @@ class GloVe:
 if __name__ == "__main__": # Example
     tokenizer = WhitespaceSentenceTokenizer() # custom tokenizer
     
-    glove = GloVe("GloVe_vectors/glove.6B.100d.txt", tokenizer)
+    glove = GloVe("GloVe_vectors/glove.840B.300d.txt", reduce_memory=True, tokenizer=tokenizer)
 
     m = glove.word_vector("machine")
     print(m)
+    print(m.dtype)
     
     ml = glove.string_vector("machine learning")
     ai = glove.string_vector("artificial intelligence")
+    print(ml.dtype, ai.dtype)
 
     similarity1 = glove.vector_sim(ml, ai)
     similarity2 = glove.string_sim("machine learning", "artificial intelligence")
     similarity3 = glove.string_sim_tokenized(["machine", "learning"], ["artificial", "intelligence"])
     print(similarity1, similarity2, similarity3)
+    print(similarity1.dtype)
+    input()
